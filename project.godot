@@ -1,9 +1,10 @@
 [application]
 config/name="Logistics Inc"
-config/description="Pixel-art maritime business and industrial strategy simulator by TCH Studio"
+config/description="Living pixel-isometric maritime business and port strategy simulator by TCH Studio"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/icon.png"
+config/version="0.4.0"
 
 [display]
 window/size/viewport_width=1280
@@ -13,6 +14,10 @@ window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=0
+window/size/mode=3
+
+[debug]
+gdscript/warnings/treat_warnings_as_errors=false
 
 [rendering]
 renderer/rendering_method="gl_compatibility"
