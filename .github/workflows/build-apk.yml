@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, living-world-v04g ]
   workflow_dispatch:
 
 env:
@@ -20,6 +20,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Generate living-world art
+        run: |
+          python3 tools/generate_v04_assets.py
+          ls -lh assets/port_backdrop_v04.svg assets/world_map_v04.svg
 
       - name: Setup Godot export environment
         run: |
