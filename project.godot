@@ -4,13 +4,14 @@ config/description="Living pixel-isometric maritime business and port strategy s
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/icon.png"
-config/version="0.5.2-dev"
+config/version="0.6.0-dev"
 
 [autoload]
 EventBus="*res://scripts/core/event_bus.gd"
 GameState="*res://scripts/core/game_state.gd"
 TimeSystem="*res://scripts/core/time_system.gd"
 SaveSystem="*res://scripts/core/save_system.gd"
+ShippingSystem="*res://scripts/systems/shipping_system.gd"
 
 [display]
 window/size/viewport_width=1280
