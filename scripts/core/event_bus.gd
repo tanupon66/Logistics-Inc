@@ -1,0 +1,17 @@
+extends Node
+
+signal day_advanced(day:int, month:int, year:int)
+signal time_speed_changed(speed:int)
+signal cash_changed(new_cash:float, delta:float, reason:String)
+signal contract_accepted(contract_id:String)
+signal contract_completed(contract_id:String)
+signal vessel_departed(vessel_id:String, origin_port_id:String, destination_port_id:String)
+signal vessel_arrived(vessel_id:String, port_id:String)
+signal facility_construction_started(facility_id:String)
+signal facility_construction_progress(facility_id:String, progress:float)
+signal facility_construction_completed(facility_id:String)
+signal shipyard_job_started(job_id:String)
+signal shipyard_job_completed(job_id:String)
+signal research_completed(technology_id:String)
+signal world_event_started(event_id:String)
+signal selection_changed(entity_type:String, entity_id:String)
