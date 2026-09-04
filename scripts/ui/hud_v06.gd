@@ -177,7 +177,7 @@ func _open_market() -> void:
 	drawer_list.add_child(HSeparator.new()); drawer_list.add_child(_label("LEASE PORT FACILITIES",12,Color("#e5bd66")))
 	for fid in ["facility_warehouse_3","facility_liverpool_quay"]:
 		var f:Dictionary=GameState.facilities[fid]
-		var leased:=fid in GameState.player_company.get("leased_facility_ids",[])
+		var leased:bool = fid in GameState.player_company.get("leased_facility_ids",[])
 		var b:=_button("%s%s\n£%d upfront • £%d/week"%[("✓ " if leased else ""),str(f.get("name","Facility")),int(f.get("lease_cost",0)),int(f.get("weekly_cost",0))],11)
 		b.disabled=leased; b.pressed.connect(_lease.bind(fid)); drawer_list.add_child(b)
 
