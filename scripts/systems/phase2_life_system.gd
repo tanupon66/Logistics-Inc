@@ -42,8 +42,8 @@ func _on_captain_hired(person_id:String, ship_id:String) -> void:
 	if not GameState.ships.has(ship_id):
 		return
 	var ship:Dictionary = GameState.ships[ship_id]
-	var trait:Dictionary = CAPTAIN_TRAITS.get(person_id,{})
-	ship["captain_trait"] = str(trait.get("name","Experienced Mariner"))
+	var captain_trait_data:Dictionary = CAPTAIN_TRAITS.get(person_id,{})
+	ship["captain_trait"] = str(captain_trait_data.get("name","Experienced Mariner"))
 	GameState.ships[ship_id] = ship
 
 func _on_contract_accepted(contract_id:String) -> void:
@@ -116,14 +116,14 @@ func _update_shipboard_life(ship_id:String) -> void:
 	var hull := float(ship.get("condition",100))
 	var captain_id := str(ship.get("captain_id",""))
 	var leadership := 0.0
-	var trait:Dictionary = {}
+	var captain_trait_data:Dictionary = {}
 	if captain_id != "" and GameState.people.has(captain_id):
 		leadership = float(GameState.people[captain_id].get("leadership",0))
-		trait = CAPTAIN_TRAITS.get(captain_id,{})
+		captain_trait_data = CAPTAIN_TRAITS.get(captain_id,{})
 
 	morale -= 0.20
 	morale += leadership / 260.0
-	morale += float(trait.get("morale_daily",0.0))
+	morale += float(captain_trait_data.get("morale_daily",0.0))
 	if stores <= 4:
 		morale -= 2.4
 		health -= 1.6
@@ -139,7 +139,7 @@ func _update_shipboard_life(ship_id:String) -> void:
 		cargo_condition -= 0.45
 	if health < 75.0:
 		cargo_condition -= 0.30
-	var protection := float(trait.get("cargo_protection",0.0))
+	var protection := float(captain_trait_data.get("cargo_protection",0.0))
 	cargo_condition += protection
 
 	morale = clampf(morale,0.0,100.0)
