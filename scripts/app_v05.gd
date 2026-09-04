@@ -4,8 +4,8 @@ const PortWorld = preload("res://scripts/world/port_world.gd")
 const HudV05 = preload("res://scripts/ui/hud_v05.gd")
 const SPLASH = preload("res://assets/studio_splash.png")
 
-var world: Node2D
-var hud: CanvasLayer
+var world
+var hud
 
 func _ready() -> void:
 	get_window().mode = Window.MODE_FULLSCREEN
