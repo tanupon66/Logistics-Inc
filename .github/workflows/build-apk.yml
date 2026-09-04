@@ -26,7 +26,7 @@ jobs:
           apt-get update -qq
           apt-get install -y -qq python3
           python3 tools/generate_v04_assets.py
-          ls -lh assets/port_backdrop_v04.svg assets/world_map_v04.svg
+          ls -lh assets/port_backdrop_v04.svg assets/port_backdrop_v05.svg assets/world_map_v04.svg assets/world_map_v05.svg
 
       - name: Setup Godot export environment
         run: |
@@ -42,10 +42,42 @@ jobs:
           fi
           godot --version
 
-      - name: Build debug APK
+      - name: Validate Godot scripts
+        shell: bash
         run: |
+          set -o pipefail
+          godot --headless --editor --quit 2>&1 | tee /tmp/godot-validate.log
+          if grep -E "SCRIPT ERROR: (Parse Error|Compile Error)|Failed to load script|Failed to create an autoload" /tmp/godot-validate.log; then
+            echo "Godot validation found script errors. Failing the build."
+            exit 1
+          fi
+
+      - name: Smoke test main scene
+        shell: bash
+        run: |
+          set +e
+          timeout 8s godot --headless --path . 2>&1 | tee /tmp/godot-smoke.log
+          STATUS=${PIPESTATUS[0]}
+          set -e
+          if [ "$STATUS" -ne 0 ] && [ "$STATUS" -ne 124 ]; then
+            echo "Godot smoke test exited with status $STATUS"
+            exit "$STATUS"
+          fi
+          if grep -E "SCRIPT ERROR:|ERROR: Failed to load script|Invalid call|Invalid access|Parser Error" /tmp/godot-smoke.log; then
+            echo "Godot smoke test found runtime/script errors."
+            exit 1
+          fi
+
+      - name: Build debug APK
+        shell: bash
+        run: |
+          set -o pipefail
           mkdir -p build/android
-          godot --headless --verbose --export-debug "Android" build/android/logistics-inc-debug.apk
+          godot --headless --verbose --export-debug "Android" build/android/logistics-inc-debug.apk 2>&1 | tee /tmp/godot-export.log
+          if grep -E "SCRIPT ERROR: (Parse Error|Compile Error)|Failed to load script|Failed to create an autoload" /tmp/godot-export.log; then
+            echo "Export produced an APK but also reported script errors. Rejecting artifact."
+            exit 1
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
