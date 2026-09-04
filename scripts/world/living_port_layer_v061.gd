@@ -116,8 +116,8 @@ func _draw_player_vessels() -> void:
 		var ship_id:=str(ids[i])
 		var ship:Dictionary=GameState.ships[ship_id]
 		var pos:Vector2=berth_positions[i]
-		var class_name:=str(ship.get("class","Sloop")).to_lower()
-		var scale_value:=.82 if class_name=="brig" else .68
+		var vessel_class:=str(ship.get("class","Sloop")).to_lower()
+		var scale_value:=.82 if vessel_class=="brig" else .68
 		_draw_sloop(pos,Vector2(1,-.16),scale_value,Color("#7b3b26"))
 		_draw_company_pennant(pos,scale_value)
 		if str(ship.get("state",""))=="loading":
@@ -141,8 +141,8 @@ func _draw_loading_operation(ship_pos:Vector2,ship:Dictionary,index:int) -> void
 		_draw_crate(p,4.5)
 	for pile_i in range(8):
 		var col:=pile_i%4
-		var row:=pile_i/4
-		_draw_crate(dock+Vector2(col*9,row*7),4.0)
+		var row_index:=pile_i/4
+		_draw_crate(dock+Vector2(col*9,row_index*7),4.0)
 	var bar_pos:=dock+Vector2(-6,-18)
 	draw_rect(Rect2(bar_pos,Vector2(58,6)),Color(.03,.05,.05,.8))
 	draw_rect(Rect2(bar_pos+Vector2(1,1),Vector2(56.0*progress,4)),Color("#d7a842"))
@@ -203,9 +203,9 @@ func _draw_dock_workers() -> void:
 		var p:=a.lerp(b,u)
 		_draw_worker(p,i%4)
 
-func _draw_worker(pos:Vector2,variant:int) -> void:
+func _draw_worker(pos:Vector2,variant_index:int) -> void:
 	var bob:=sin(ambient_t*8.0+pos.x*.05)*1.0
-	var coat:Color=[Color("#5b3725"),Color("#315368"),Color("#6c5935"),Color("#493d55")][variant]
+	var coat:Color=[Color("#5b3725"),Color("#315368"),Color("#6c5935"),Color("#493d55")][variant_index]
 	draw_circle(pos+Vector2(0,-5+bob),2.2,Color("#cda87e"))
 	draw_rect(Rect2(pos+Vector2(-2,-3+bob),Vector2(4,7)),coat)
 	draw_line(pos+Vector2(-1,4+bob),pos+Vector2(-2,8+bob),Color("#28231e"),1.0)
