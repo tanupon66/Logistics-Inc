@@ -5,6 +5,7 @@ signal camera_changed(zoom_value: float)
 
 const PORT_ART = preload("res://assets/port_backdrop_v05.svg")
 const LivingLayer = preload("res://scripts/world/living_port_layer.gd")
+const IsoGrid = preload("res://scripts/core/iso_grid.gd")
 
 var camera: Camera2D
 var art: Sprite2D
@@ -16,11 +17,11 @@ var touch_moved := false
 var mouse_dragging := false
 
 var hotspots := {
-	"ROYAL SHIPYARD": {"rect": Rect2(75,-105,260,165), "type":"shipyard", "level":1, "workers":42, "status":"Building merchant hull"},
-	"EASTERN TRADING CO.": {"rect": Rect2(-280,-120,220,145), "type":"warehouse", "level":1, "capacity":800, "status":"Cargo handling"},
-	"WAREHOUSE No.3": {"rect": Rect2(325,-95,190,135), "type":"warehouse", "level":1, "capacity":520, "status":"Leased storage"},
-	"OLD DRY DOCK": {"rect": Rect2(235,65,235,130), "type":"dry_dock", "level":1, "status":"External repair yard"},
-	"LIVERPOOL QUAY": {"rect": Rect2(-480,40,300,170), "type":"berth", "berths":2, "status":"Busy"}
+	"ROYAL SHIPYARD": {"rect": Rect2(75,-105,260,165), "facility_id":"facility_royal_shipyard"},
+	"EASTERN TRADING CO.": {"rect": Rect2(-280,-120,220,145), "facility_id":"facility_eastern_warehouse"},
+	"WAREHOUSE No.3": {"rect": Rect2(325,-95,190,135), "facility_id":"facility_warehouse_3"},
+	"OLD DRY DOCK": {"rect": Rect2(235,65,235,130), "facility_id":"facility_old_dry_dock"},
+	"LIVERPOOL QUAY": {"rect": Rect2(-480,40,300,170), "facility_id":"facility_liverpool_quay"}
 }
 
 func _ready() -> void:
@@ -42,7 +43,7 @@ func _build_world() -> void:
 	add_child(living)
 
 	camera = Camera2D.new()
-	camera.position = Vector2.ZERO
+	camera.position = Vector2(0, 0)
 	camera.zoom = Vector2.ONE
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 10.0
@@ -119,12 +120,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func _select_at_screen(screen_pos: Vector2) -> void:
 	var world_pos := get_viewport().get_canvas_transform().affine_inverse() * screen_pos
 	for key in hotspots.keys():
-		var data: Dictionary = hotspots[key]
-		var rect: Rect2 = data["rect"]
+		var hotspot: Dictionary = hotspots[key]
+		var rect: Rect2 = hotspot["rect"]
 		if rect.has_point(world_pos):
-			var payload := data.duplicate(true)
-			payload.erase("rect")
-			payload["name"] = key
+			var payload := GameState.get_facility(str(hotspot.get("facility_id","")))
+			payload["grid_cell"] = IsoGrid.world_to_grid(world_pos)
 			selection_changed.emit(str(key), payload)
 			return
 	selection_changed.emit("LIVERPOOL PORT", {
