@@ -1,18 +1,24 @@
-# Logistics Inc
+# Logistics Inc — TCH Studio
 
-Android-first maritime logistics and port-management game prototype built with **Godot 4.7.2**.
+Android-first pixel-art maritime business management simulator.
 
-## Prototype 0.1
-- Real geographic coordinates for major Southeast Asian ports.
-- Live OpenStreetMap map tiles with local cache and required attribution.
-- Starter company at Laem Chabang, Thailand.
-- Cargo contracts to Singapore, Port Klang and Cat Lai.
-- Auto Captain navigation or manual helm/throttle.
-- Haversine distance, true bearings, vessel speed, fuel and company cash.
-- Android landscape interface.
-- GitHub Actions creates a debug APK on every push.
+## v0.3.0 Alpha
+- TCH Studio animated startup splash and studio chime
+- Custom Android launcher icon
+- Fullscreen mobile-safe landscape scaling
+- Living Liverpool harbor: moving ships, tugboats, rail traffic, carts, cranes, smoke and day/night cycle
+- New Company / Continue / Load / Options / Credits
+- Save/load company state
+- Fleet chartering and ship purchasing
+- Freight contracts and timed voyages
+- Captain/crew hiring
+- Supply provisioning and voyage consumption
+- Manual voyage events when no captain is hired
+- Captain auto-resolution for some routine events
+- Commercial repair and infrastructure leasing
+- Shipyard acquisition, own-fleet construction and build-for-sale jobs
+- Research point accumulation and Age of Sail technologies
+- Finance/company log
+- Original runtime-synthesized TCH Studio audio: intro, UI click, event alert, harbor ambience and management theme
 
-## Map data
-Map tiles: © OpenStreetMap contributors, used under the OpenStreetMap tile usage policy and ODbL attribution requirements.
-
-This is an early playable systems prototype. 3D ports, ship models, shipyard construction, crew hiring, economy simulation and world expansion are planned on top of this core.
+The current build is a playable vertical-slice alpha. The historical simulation, global world map, competitor AI, ship design/tenders and full multi-era technology progression remain in development.
